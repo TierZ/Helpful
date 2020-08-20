@@ -30,3 +30,7 @@
 		NSPredicate *predicte = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
 		return [predicte evaluateWithObject:checkStr];
 	}
+
+2.学习git指令
+	
+	https://learngitbranching.js.org/?locale=zh_CN
