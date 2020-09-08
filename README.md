@@ -34,3 +34,12 @@
 2.学习git指令
 	
 	https://learngitbranching.js.org/?locale=zh_CN
+
+3.iOS NSDate转成时间戳出现一年的误差
+    
+    第一种方法在转时间戳时使用的格式是：YYYY-MM-dd
+    第二种方法的时间戳格式是：yyyy-MM-dd
+    可以看到同一天打印的日期差距一年，这个bug太恶心，而且还是日期在年末的情况下才出现的。
+    查了下YYYY-MM-dd和yyyy-MM-dd的区别，以下仅供参考：
+    “YYYY format” 是 “ISO week numbering system”，“yyyy format” 是 “Gregorian Calendar”。
+    以后处理时间戳可要注意了要使用小写的yyyy就行了
