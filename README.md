@@ -43,3 +43,21 @@
     查了下YYYY-MM-dd和yyyy-MM-dd的区别，以下仅供参考：
     “YYYY format” 是 “ISO week numbering system”，“yyyy format” 是 “Gregorian Calendar”。
     以后处理时间戳可要注意了要使用小写的yyyy就行了
+    
+    
+4.iOS 14下popToRootViewControllerAnimated:YES 导致TabBar隐藏的问题
+解决方案：
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (self.viewControllers.count > 0) {
+        // 当前导航栏, 只有第一个viewController push的时候设置隐藏
+        if (self.viewControllers.count == 1) {
+            viewController.hidesBottomBarWhenPushed = YES;
+        }
+    } else {
+        viewController.hidesBottomBarWhenPushed = NO;
+    }
+    [super pushViewController:viewController animated:animated];
+}
+
+原理：
+iOS14上，popToRoot或者popTo指定控制器，立马去拿viewControllers属性与iOS13有区别。iOS14会包含当前控制器，例如：A->B->C，这时候在C pop到A，viewControllers为[C,A]，在iOS13是[A]，而通过汇编查看了下系统的实现，系统会去拿数组中的控制器先翻转成[A,C]，然后遍历获取hidesBottomBarWhenPushed属性，因此A最外层会被C的hidesBottomBarWhenPushed覆盖，从而隐藏了tabbar，根据该思路，可以分类hook hidesBottomBarWhenPushed，判断当前控制器是否被pop了，从而返回最topViewController.hidesBottomBarWhenPushed
